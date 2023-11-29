@@ -1,0 +1,29 @@
+<div class="container px-5 px-sm-0">
+  <div class="row">
+    <div class="col-md-3">
+      <%= render "info",customer: @customer %>
+
+      <%= render "public/posts/new",post: @post %>
+    </div>
+
+    <div class="col-md-8 offset-md-1">
+      <h1>ユーザー一覧</h1>
+
+      <table class="table">
+        <tr>
+          <th>画像</th>
+          <th>名前</th>
+          <th>自己紹介</th>
+        </tr>
+
+        <% @customers.each do |customer| %>
+        <tr>
+          <td><%= image_tag customer.get_profile_image(100,100) %></td>
+          <td><%= link_to customer.name,public_customer_path(customer.id) %></td>
+          <td><%= customer.introduction %></td>
+        </tr>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>

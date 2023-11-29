@@ -1,0 +1,36 @@
+<div class="container px-5 px-sm-0">
+  <div class="row">
+    <div class="col-md-3">
+      <%= render "public/customers/info",customer: @customer %>
+
+      <%= render "new",post: @post_new %>
+    </div>
+
+    <div class="col-md-8 offset-md-1">
+      <h1>投稿詳細</h1>
+      <table class="table">
+        <tr>
+          <th>作成者</th>
+          <th>タイトル</th>
+          <th>本文</th>
+          <th colspan="2"></th>
+        </tr>
+        <tr>
+          <td><%= link_to @post.customer.name,public_customer_path(@post.customer.id) %></td>
+          <td><%= @post.title %></td>
+          <td><%= @post.body %></td>
+          <td>
+            <% if @post.customer_id == current_customer.id %>
+            <%= link_to "編集",edit_post_path(@post),class: "btn btn-success" %>
+            <% end %>
+            </td>
+          <td>
+            <% if @post.customer_id == current_customer.id %>
+            <%= link_to "削除",post_path(@post),method: :delete,"data-confirm"=> "本当に削除しますか？",class: "btn btn-danger" %>
+            <% end %>
+            </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
