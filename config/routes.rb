@@ -11,7 +11,10 @@ Rails.application.routes.draw do
   }
 
   scope module: :public do
-   resources :posts,except: [:new]
+   resources :posts,except: [:new] do
+     resource :favorites,only: [:create,:destroy]
+     resources :post_comments,only: [:create,:destroy]
+   end
   end
   namespace :public do
     resources :customers,except: [:new,:destroy]

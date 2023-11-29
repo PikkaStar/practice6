@@ -13,7 +13,7 @@
           <th>タイトル</th>
           <th>作成者</th>
           <th>本文</th>
-          <th colspan="2"></th>
+          <th colspan="3"></th>
         </tr>
 
         <% @posts.each do |post| %>
@@ -22,6 +22,7 @@
           <td><%= link_to post.title,post_path(post.id) %></td>
           <td><%= post.customer.name %></td>
           <td><%= post.body %></td>
+          <td>コメント<%= post.post_comments.count %>件</td>
           <td><% if post.customer_id == current_customer.id %>
           <%= link_to "編集",edit_post_path(post.id),class: "btn btn-success" %>
           <% end %>

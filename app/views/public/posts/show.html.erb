@@ -13,24 +13,68 @@
           <th>作成者</th>
           <th>タイトル</th>
           <th>本文</th>
-          <th colspan="2"></th>
+          <th colspan="4"></th>
         </tr>
         <tr>
           <td><%= link_to @post.customer.name,public_customer_path(@post.customer.id) %></td>
           <td><%= @post.title %></td>
           <td><%= @post.body %></td>
+          <td>コメント<%= @post.post_comments.count %>件</td>
+          <td>
+            <% if @post.favorited_by?(current_customer) %>
+            <%= link_to post_favorites_path(@post),method: :delete do %>
+             ♥<%= @post.favorites.count %>いいね
+             <% end %>
+             <% else %>
+             <%= link_to post_favorites_path(@post),method: :post do %>
+             ♡<%= @post.favorites.count %>いいね
+             <% end %>
+             <% end %>
+          </td>
           <td>
             <% if @post.customer_id == current_customer.id %>
             <%= link_to "編集",edit_post_path(@post),class: "btn btn-success" %>
             <% end %>
-            </td>
+          </td>
           <td>
             <% if @post.customer_id == current_customer.id %>
             <%= link_to "削除",post_path(@post),method: :delete,"data-confirm"=> "本当に削除しますか？",class: "btn btn-danger" %>
             <% end %>
-            </td>
+          </td>
         </tr>
       </table>
+
+      <% if @post.post_comments.present? %>
+      <h3>コメント一覧</h3>
+      <table class="table">
+        <tr>
+          <th></th>
+          <th>名前</th>
+          <th>コメント</th>
+          <th></th>
+        </tr>
+       <% @post.post_comments.each do |post_comment| %>
+       <tr>
+         <td><%= image_tag post_comment.customer.get_profile_image(100,100) %></td>
+         <td><%= link_to post_comment.customer.name,public_customer_path(post_comment.customer.id) %></td>
+         <td><%= post_comment.comment %></td>
+         <td>
+           <% if post_comment.customer == current_customer %>
+           <%= link_to "削除",post_post_comment_path(post_comment.post,post_comment),method: :delete,class: "btn btn-danger" %>
+           <% end %>
+           </td>
+       </tr>
+       <% end %>
+      </table>
+      <% else %>
+      <h2>コメントはありません</h2>
+      <% end %>
+
+      <%= form_with model: [@post,@comment] do |f| %>
+      <%= f.text_area :comment,row: "5",placeholder: "コメントをここに",class: "form-control" %>
+      <%= f.submit "送信",class: "btn btn-success" %>
+      <% end %>
+
     </div>
   </div>
 </div>
